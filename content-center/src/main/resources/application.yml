@@ -1,0 +1,17 @@
+server:
+  port: 8010
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/content_center?serverTimezone=UTC
+    hikari:
+      username: root
+      password: root
+      # >= 6.x: com.mysql.cj.jdbc.Driver
+      # <= 5.x: com.mysql.jdbc.Driver  但是6.x以后使用这个也没问题
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  application:
+        name: content-center
