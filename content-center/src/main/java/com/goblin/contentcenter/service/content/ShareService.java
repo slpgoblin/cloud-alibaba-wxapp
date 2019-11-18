@@ -40,19 +40,7 @@ public class ShareService {
         // 发布人id
         Integer userId = share.getUserId();
 
-        //通过服务注册发现获取api地址
-        List<ServiceInstance> userInstances = discoveryClient.getInstances("user-center");
-        List<String> targetUrls = userInstances.stream()
-            .map(userInstance -> userInstance.getUri().toString()+"/users/{id}")
-            // 默认获取list中的第一条，如果list为空则抛出异常
-            .collect(Collectors.toList());
-
-        //随机数
-        int i = ThreadLocalRandom.current().nextInt(targetUrls.size());
-
-        String targetUrl = targetUrls.get(i);
-        log.info("请求的目标url：{}",targetUrl);
-        UserDTO userDTO = restTemplate.getForObject(targetUrl ,UserDTO.class,userId);
+        UserDTO userDTO = restTemplate.getForObject("http://user-center/users/{userId}" ,UserDTO.class,userId);
 
         ShareDTO shareDTO = new ShareDTO();
         // 消息的装配
