@@ -13,5 +13,10 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+        cluster-name: BJ
   application:
         name: content-center
+ribbon:
+  eager-load:
+    enabled: true
+    clients: user-center,xxx
