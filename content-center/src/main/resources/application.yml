@@ -20,3 +20,13 @@ ribbon:
   eager-load:
     enabled: true
     clients: user-center,xxx
+#logging:
+#  level:
+#    # 只有feign接口声明为debug级别才可以正常打印日志
+#    com.goblin.contentcenter.feignclient.UserCenterFeignClient: debug
+#feign:
+#  client:
+#    config:
+#      # 微服务名称,default为全局配置
+#      default:
+#        loggerLevel: full

@@ -4,8 +4,11 @@ import com.goblin.contentcenter.dao.content.ShareMapper;
 import com.goblin.contentcenter.domain.dto.content.ShareDTO;
 import com.goblin.contentcenter.domain.dto.user.UserDTO;
 import com.goblin.contentcenter.domain.entity.content.Share;
+import com.goblin.contentcenter.feignclient.UserCenterFeignClient;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
@@ -24,14 +27,11 @@ import java.util.stream.Collectors;
  **/
 @Service
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ShareService {
 
-    @Resource
-    private ShareMapper shareMapper;
-    @Resource
-    private RestTemplate restTemplate;
-    @Resource
-    private DiscoveryClient discoveryClient;
+    private final ShareMapper shareMapper;
+    private final UserCenterFeignClient userCenterFeignClient;
 
 
     public ShareDTO findById(Integer id) {
@@ -40,7 +40,7 @@ public class ShareService {
         // 发布人id
         Integer userId = share.getUserId();
 
-        UserDTO userDTO = restTemplate.getForObject("http://user-center/users/{userId}" ,UserDTO.class,userId);
+        UserDTO userDTO = userCenterFeignClient.findById(userId);
 
         ShareDTO shareDTO = new ShareDTO();
         // 消息的装配
