@@ -14,6 +14,13 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
         cluster-name: BJ
+    sentinel:
+      transport:
+        # 指定控制台的地址
+        dashboard: 127.0.0.1:8080
+        # 关闭掉对Spring MVC的保护
+      filter:
+        enabled: false
   application:
         name: content-center
   # 允许一个server拥有多个feign客户端

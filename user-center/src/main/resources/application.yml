@@ -1,5 +1,6 @@
 server:
-  port: 9091
+  port: 8081
+
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/user_center?serverTimezone=UTC
@@ -14,6 +15,6 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
 #        namespace: 43b41e3f-e1a8-4f00-8d3e-a2d685f853a0
-        cluster-name: CD
+        cluster-name: BJ
   application:
     name: user-center
