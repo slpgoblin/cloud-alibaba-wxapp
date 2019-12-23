@@ -48,8 +48,14 @@ feign:
     max-connections: 200
     # feign单个路径的最大连接数
     max-connections-per-route: 50
+  sentinel:
+    enabled: true
 management:
   endpoints:
     web:
       exposure:
         include: '*'
+resttemplate:
+  sentinel:
+    # 关闭注解（用于开发调试）
+    enabled: false

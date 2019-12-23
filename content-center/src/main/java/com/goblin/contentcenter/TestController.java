@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -100,5 +101,47 @@ public class TestController {
             }
             ContextUtil.exit();
         }
+    }
+
+    @GetMapping("/test-sentinel-resource")
+    @SentinelResource(value = "test-sentinel-api",blockHandlerClass = TestControllerBlockHandlerClass.class,fallbackClass = TestControllerFallBackClass.class,blockHandler = "block",fallback = "fallback")
+    public String testSentinelResource(
+            @RequestParam(required = false) String a) {
+        if (StringUtils.isBlank(a)) {
+            throw new IllegalArgumentException("a不能为空");
+        }
+        return a;
+    }
+
+    /**
+     * 处理限流或者降级
+     * @param a
+     * @param e
+     * @return
+     */
+    public String block(String a ,BlockException e){
+        log.warn("限流，或者降级了", e);
+        return "限流，或者降级了";
+    }
+
+    /**
+     * 处理降级
+     * @param a
+     * @return
+     */
+    public String fallback(String a) {
+        log.warn("降级了");
+        return "降级了 fallback";
+    }
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @GetMapping("/test-rest-template-sentinel/{userId}")
+    public UserDTO test(@PathVariable Integer userId) {
+        return this.restTemplate
+                .getForObject(
+                        "http://user-center/users/{userId}",
+                        UserDTO.class, userId);
     }
 }
