@@ -9,11 +9,15 @@ import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.goblin.contentcenter.domain.dto.user.UserDTO;
 import com.goblin.contentcenter.feignclient.TestBlogFeignClient;
 import com.goblin.contentcenter.feignclient.TestUserCenterFeignClient;
+import com.goblin.contentcenter.rockermq.GoblinSource;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.stream.messaging.Source;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -143,5 +147,23 @@ public class TestController {
                 .getForObject(
                         "http://user-center/users/{userId}",
                         UserDTO.class, userId);
+    }
+
+    @Autowired
+    private Source source;
+
+    @GetMapping("/test-stream")
+    public String testStream() {
+        source.output().send(MessageBuilder.withPayload("test-stream").build());
+        return "success";
+    }
+
+    @Autowired
+    private GoblinSource goblinSource;
+
+    @GetMapping("/test-goblin-stream")
+    public String testGoblinStream() {
+        goblinSource.outPut() .send(MessageBuilder.withPayload("test-goblin-stream").build());
+        return "success";
     }
 }
