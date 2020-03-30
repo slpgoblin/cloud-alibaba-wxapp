@@ -16,5 +16,28 @@ spring:
         server-addr: 127.0.0.1:8848
 #        namespace: 43b41e3f-e1a8-4f00-8d3e-a2d685f853a0
         cluster-name: BJ
+    stream:
+      rocketmq:
+        binder:
+          name-server: 127.0.0.1:9876
+      bindings:
+        input :
+          # 主题 topic
+          destination: add-bonus
+          # 必须指定group，如果不是rockermq可以不设置
+          group: consumer-group
+        goblin-input:
+          # 主题 topic
+          destination: stream-goblin-topic
+          # 必须指定group，如果不是rockermq可以不设置
+          group: goblin-group
   application:
     name: user-center
+rocketmq:
+  name-server: 127.0.0.1:9876
+#  producer:
+#    # 必须指定group
+#    group: test-group
+logging:
+  level:
+    com.alibaba.nacos: error
