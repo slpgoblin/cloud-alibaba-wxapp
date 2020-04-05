@@ -1,8 +1,8 @@
 package com.goblin.contentcenter.controller.content;
 
+import com.goblin.contentcenter.auth.CheckAuthorization;
 import com.goblin.contentcenter.domain.dto.content.ShareAuditDTO;
 import com.goblin.contentcenter.domain.entity.content.Share;
-import com.goblin.contentcenter.domain.enums.AuditStatusEnum;
 import com.goblin.contentcenter.service.content.ShareService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +25,9 @@ public class ShareAdminController {
     private ShareService shareService;
 
     @PutMapping("/audit/{id}")
+    @CheckAuthorization(value = "admin")
     public Share auditById(@PathVariable Integer id, @RequestBody ShareAuditDTO shareAuditDTO){
-        // TODO 认证、授权
-        shareService.auditById(id,shareAuditDTO);
-        return null;
+        return shareService.auditById(id,shareAuditDTO);
     }
 
 }

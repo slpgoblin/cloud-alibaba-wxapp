@@ -1,12 +1,10 @@
 package com.goblin.contentcenter.controller.content;
 
+import com.goblin.contentcenter.auth.CheckLogin;
 import com.goblin.contentcenter.domain.dto.content.ShareDTO;
 import com.goblin.contentcenter.service.content.ShareService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -26,6 +24,7 @@ public class ShareConroller {
 
 
     @GetMapping("/{id}")
+    @CheckLogin
     public ShareDTO findById(@PathVariable Integer id) {
         return shareService.findById(id);
     }

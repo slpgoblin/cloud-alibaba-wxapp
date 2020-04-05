@@ -59,6 +59,9 @@ feign:
       # 微服务名称,default为全局配置
       default:
         loggerLevel: full
+        # 自定义拦截器
+        requestInterceptors:
+        - com.goblin.contentcenter.feignclient.interceptor.TokenRelayRequestInterceptor
   httpclient:
     # feign使用apache httpclient做请求代替默认的urlconnention（也可以使用okhttp）
     enabled: true
